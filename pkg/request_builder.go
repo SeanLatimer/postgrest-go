@@ -186,6 +186,14 @@ func (b *FilterRequestBuilder) Filter(column, operator, criteria string) *Filter
 	return b
 }
 
+func (b *FilterRequestBuilder) Custom(prefix, criteria string, params ...string) *FilterRequestBuilder {
+	for i, param := range params {
+		params[i] = SanitizeParam(param)
+	}
+	b.params.Add(SanitizeParam(prefix), fmt.Sprintf(criteria, params))
+	return b
+}
+
 func (b *FilterRequestBuilder) Eq(column, value string) *FilterRequestBuilder {
 	return b.Filter(column, "eq", SanitizeParam(value))
 }
