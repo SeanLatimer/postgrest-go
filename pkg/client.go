@@ -66,6 +66,9 @@ func (c Client) Rpc(f string, params interface{}) (*http.Response, error) {
 		return nil, err
 	}
 
+	req.URL.Path = req.URL.Path[1:]
+	req.URL = c.Transport.baseURL.ResolveReference(req.URL)
+
 	req.Header = c.Headers()
 	resp, err := c.session.Do(req)
 	if err != nil {
